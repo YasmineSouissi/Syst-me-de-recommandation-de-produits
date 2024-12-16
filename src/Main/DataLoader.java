@@ -4,12 +4,10 @@ import java.util.*;
 
 public class DataLoader {
     public static void main(String[] args) {
-        // Chemins des fichiers CSV
         String moviesFile = "E://Docs//Weka Projects//ProductRecommendation//DataSets//movies.csv";
 
         String ratingsFile = "E://Docs//Weka Projects//ProductRecommendation//DataSets//ratings.csv";
 
-        // Charger et afficher les fichiers
         List<String[]> moviesData = loadCSV(moviesFile);
         List<String[]> ratingsData = loadCSV(ratingsFile);
 
