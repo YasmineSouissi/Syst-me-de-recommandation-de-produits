@@ -5,22 +5,26 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataPreparation {
-    public static void main(String[] args) {
-        String moviesFile = "E://Docs//Weka Projects//ProductRecommendation//DataSets//movies.csv";
+public static void main(String[] args) {
+    String moviesFile = "E://Docs//Weka Projects//ProductRecommendation//DataSets//movies.csv";
+    String outputFile = "E://Docs//Weka Projects//ProductRecommendation//DataSets//encoded_movies.csv"; // Fichier de sortie
 
-        List<String[]> moviesData = loadCSV(moviesFile);
+    List<String[]> moviesData = loadCSV(moviesFile);
 
-        if (!moviesData.isEmpty()) {
-            System.out.println("Encodage des genres...");
-            List<String[]> encodedData = encodeGenres(moviesData);
+    if (!moviesData.isEmpty()) {
+        System.out.println("Encodage des genres...");
+        List<String[]> encodedData = encodeGenres(moviesData);
 
-            // Afficher les 5 premières lignes encodées
-            System.out.println("\nLes 5 premières lignes avec genres encodés :");
-            printFirstLines(encodedData, 5);
-        } else {
-            System.out.println("Les données de movies.csv sont introuvables ou vides.");
-        }
+        // Afficher les 5 premières lignes encodées
+        System.out.println("\nLes 5 premières lignes avec genres encodés :");
+        printFirstLines(encodedData, 5);
+
+        // Enregistrer les résultats dans un fichier CSV
+        saveCSV(encodedData, outputFile);
+    } else {
+        System.out.println("Les données de movies.csv sont introuvables ou vides.");
     }
+}
 
     // Méthode pour charger un fichier CSV
     public static List<String[]> loadCSV(String filePath) {
@@ -38,6 +42,22 @@ public class DataPreparation {
         return data;
     }
 
+ // Méthode pour enregistrer les données dans un fichier CSV
+    public static void saveCSV(List<String[]> data, String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String[] row : data) {
+                String line = String.join(",", row);
+                bw.write(line);
+                bw.newLine();
+            }
+            System.out.println("Les données ont été enregistrées dans le fichier : " + filePath);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'enregistrement du fichier : " + filePath);
+            e.printStackTrace();
+        }
+    }
+
+    
     // Méthode pour encoder les genres dans des colonnes binaires et supprimer la colonne genres
     public static List<String[]> encodeGenres(List<String[]> data) {
         // Récupérer les genres uniques
